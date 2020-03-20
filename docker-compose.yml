@@ -1,0 +1,31 @@
+version: '3'
+services:
+  backend:  
+    build: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: >
+      bash -c "chmod +x ./wait-for-it.sh &&
+              ./wait-for-it.sh database:5432 &&
+              npm i &&
+              npm run dev"
+    ports:
+      - "1337:1337"
+    environment:
+      NODE_ENV: local
+    depends_on:
+      - database
+  database:
+    image: "postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: contacts
+    volumes:
+      - data-volume:/var/lib/db
+volumes:
+  data-volume:
+    driver: "local"
