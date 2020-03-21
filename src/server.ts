@@ -4,12 +4,15 @@ import * as HttpStatus from 'http-status-codes';
 import * as Koa from 'koa';
 import * as bodyParser from 'koa-bodyparser';
 
+const cors = require('@koa/cors');
+
 import contactsController from './controllers/contacts';
 
 const PORT: number = Number(config.PORT);
 const app = new Koa();
 
 app.use(bodyParser());
+app.use(cors());
 
 app.use(async (ctx: Koa.Context, next: () => Promise<any>) => {
   try {
