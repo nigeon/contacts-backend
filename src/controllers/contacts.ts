@@ -9,8 +9,11 @@ const routerOpts: Router.IRouterOptions = {
 const router: Router = new Router(routerOpts);
 
 router.get('/', async (ctx: Koa.Context) => {
+  // Limiting fields to id, firstname, lastname ... just for fun :)
   const contactRepository: Repository<Contact> = getManager().getRepository(Contact);
-  ctx.body = await contactRepository.find({ where: { status: ContactStatus.ACTIVE } });
+  ctx.body = await contactRepository.find({
+    select: ['id', 'firstname', 'lastname'],
+    where: { status: ContactStatus.ACTIVE } });
 });
 
 router.post('/', async (ctx: Koa.Context) => {
